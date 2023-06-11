@@ -2,21 +2,26 @@ from conexion import Conexiones
 from buscaLibre import BuscaLibre
 
 
+def mostrar_menu():
+    print("\n")
+    print('-' * 50)
+    print("MENÚ BUSCALIBRE".center(50, " "))
+    print('-' * 50)
+    print("1- Cargar Libros")
+    print("2- Modificar precio de un libro")
+    print("3- Borrar un libro")
+    print("4- Cargar disponibilidad")
+    print("5- Listado de Libros")
+    print("6- Ventas")
+    print("7- Actualizar Precios")
+    print("8- Mostrar registros anteriores a una fecha")
+    print("0- Salir")
+    print("\n")
+
+
 class Menu:
     def __init__(self, biblioteca):
         self.biblioteca = biblioteca
-
-    def mostrar_menu(self):
-        print("MENÚ BUSCALIBRE")
-        print("1- Cargar Libros")
-        print("2- Modificar precio de un libro")
-        print("3- Borrar un libro")
-        print("4- Cargar disponibilidad")
-        print("5- Listado de Libros")
-        print("6- Ventas")
-        print("7- Actualizar Precios")
-        print("8- Mostrar registros anteriores a una fecha")
-        print("0- Salir")
 
     def ejecutar_opcion(self, opcion):
         try:
@@ -25,12 +30,12 @@ class Menu:
                 titulo = input("Ingrese el título: ")
                 autor = input("Ingrese el autor: ")
                 genero = input("Ingrese el género: ")
-                precio = float(input("Ingrese el precio: "))
+                precio = float(input("Ingrese el precio: $ "))
                 cant_disponible = int(input("Ingrese la cantidad disponible: "))
                 self.biblioteca.cargar_libro(isbn, titulo, autor, genero, precio, cant_disponible)
             elif opcion == 2:
                 id_libro = int(input("Ingrese el ID del libro: "))
-                nuevo_precio = float(input("Ingrese el nuevo precio: "))
+                nuevo_precio = float(input("Ingrese el nuevo precio: $ "))
                 self.biblioteca.modificar_precio_libro(id_libro, nuevo_precio)
             elif opcion == 3:
                 id_libro = int(input("Ingrese el ID del libro: "))
@@ -74,8 +79,9 @@ def main():
 
     opcion = None
     while opcion != 0:
-        menu.mostrar_menu()
-        opcion = int(input("Ingrese una opción: "))
+        mostrar_menu()
+        opcion = int(input("--> Ingrese una opción: "))
+        print("\n")
         menu.ejecutar_opcion(opcion)
 
     conexion.desconectar()

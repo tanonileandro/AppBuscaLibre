@@ -11,7 +11,7 @@ class BuscaLibre:
             self.conexion.ejecutar_consulta("""
                 INSERT INTO libros (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, cant_disponible)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (isbn, titulo, autor, genero, precio, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), cant_disponible))
+                """, (isbn, titulo, autor, genero, precio, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), cant_disponible))
             print("Libro cargado correctamente.")
         except sqlite3.Error as e:
             print(f"Error al cargar el libro: {e}")
@@ -54,15 +54,22 @@ class BuscaLibre:
 
     def listar_libros(self):
         try:
-            registros = self.conexion.obtener_registros("""
+            registros = self.conexion.obtener_registros(
+                """
                 SELECT * FROM libros
                 ORDER BY id, autor, titulo
-            """)
-            print("ID | ISBN | Título | Autor | Género | Precio | Fecha Último Precio | Cant. Disponible")
+                """)
             for registro in registros:
                 id_libro, isbn, titulo, autor, genero, precio, fecha_ultimo_precio, cant_disponible = registro
-                print(
-                    f"{id_libro} | {isbn} | {titulo} | {autor} | {genero} | {precio} | {fecha_ultimo_precio} | {cant_disponible}")
+                print(f"""ID: {id_libro}
+ISBN: {isbn} 
+Título: {titulo}
+Autor: {autor}
+Género: {genero}
+Precio: ${precio}
+Fecha Último Precio: {fecha_ultimo_precio}
+Cant. Disponible: {cant_disponible}
+""")
         except sqlite3.Error as e:
             print(f"Error al listar los libros: {e}")
 
@@ -101,11 +108,17 @@ class BuscaLibre:
                 SELECT * FROM libros
                 WHERE fecha_ultimo_precio < ?
                 ORDER BY id, autor, titulo
-            """, (fecha,))
-            print("ID | ISBN | Título | Autor | Género | Precio | Fecha Último Precio | Cant. Disponible")
+                """, (fecha,))
             for registro in registros:
                 id_libro, isbn, titulo, autor, genero, precio, fecha_ultimo_precio, cant_disponible = registro
-                print(
-                    f"{id_libro} | {isbn} | {titulo} | {autor} | {genero} | {precio} | {fecha_ultimo_precio} | {cant_disponible}")
+                print(f"""ID: {id_libro}
+ISBN: {isbn} 
+Título: {titulo}
+Autor: {autor}
+Género: {genero}
+Precio: ${precio}
+Fecha Último Precio: {fecha_ultimo_precio}
+Cant. Disponible: {cant_disponible}
+""")
         except sqlite3.Error as e:
             print(f"Error al mostrar los registros anteriores a la fecha: {e}")
