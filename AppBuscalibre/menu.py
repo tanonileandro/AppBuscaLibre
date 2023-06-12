@@ -3,18 +3,19 @@ from buscaLibre import BuscaLibre
 
 
 def mostrar_menu():
+    print("\n")
     print(" BUSCALIBRE MENU ".center(60, '-'))
-    print("1- Cargar Libros")
-    print("2- Modificar precio de un libro")
-    print("3- Borrar un libro")
-    print("4- Cargar disponibilidad")
-    print("5- Listado de Libros")
-    print("6- Ventas")
-    print("7- Actualizar Precios")
-    print("8- Mostrar registros anteriores a una fecha en específico")
-    print("9- Mostrar historial de libros")
-    print("10- Mostrar historial de ventas")
-    print("0- Salir del menú")
+    print("1.  Cargar Libros")
+    print("2.  Modificar Precio de un Libro")
+    print("3.  Borrar un Libro")
+    print("4.  Cargar Disponibilidad")
+    print("5.  Listado de Libros")
+    print("6.  Registrar Venta")
+    print("7.  Actualizar Precios")
+    print("8.  Mostrar Registros Anteriores")
+    print("9.  Mostrar Historial de Libros")
+    print("10. Mostrar Historial de Ventas")
+    print("0.  Salir")
     print('-' * 60)
 
 
@@ -32,7 +33,8 @@ def ejecutar_menu():
 
     while opcion != "0":
         mostrar_menu()
-        opcion = input("Ingrese una opción: ")
+        opcion = input("--> Ingrese una opción del Menú: ")
+        print("\n")
 
         if opcion == "1":
             buscalibre.cargar_libros()
