@@ -1,82 +1,63 @@
 import sqlite3
 
 
-class Conexiones:
-    def __init__(self, nombre_archivo):
-        self.nombre_archivo = nombre_archivo
+class ConexionSQLite:
+    def __init__(self, archivo_db):
+        self.archivo_db = archivo_db
         self.conexion = None
-        self.miCursor = None
+        self.cursor = None
 
     def conectar(self):
         try:
-            self.conexion = sqlite3.connect(self.nombre_archivo)
-            self.miCursor = self.conexion.cursor()
-            self.crear_tabla_libros()
-            self.crear_tabla_ventas()
+            self.conexion = sqlite3.connect(self.archivo_db)
+            self.cursor = self.conexion.cursor()
+            print("Conexión exitosa a la base de datos.")
         except sqlite3.Error as e:
             print(f"Error al conectar a la base de datos: {e}")
 
     def desconectar(self):
-        if self.conexion:
-            self.conexion.close()
-            self.conexion = None
+        try:
+            if self.cursor:
+                self.cursor.close()
+            if self.conexion:
+                self.conexion.close()
             print("Desconexión exitosa.")
+        except sqlite3.Error as e:
+            print(f"Error al desconectar de la base de datos: {e}")
+
+    def obtener_registro(self, consulta):
+        try:
+            self.cursor.execute(consulta)
+            registro = self.cursor.fetchone()
+            return registro
+        except Exception as e:
+            print("Error al obtener el registro:", e)
 
     def ejecutar_consulta(self, consulta, parametros=None):
         try:
-            if self.miCursor:
-                if parametros:
-                    self.miCursor.execute(consulta, parametros)
-                else:
-                    self.miCursor.execute(consulta)
-                self.conexion.commit()
+            if parametros:
+                self.cursor.execute(consulta, parametros)
             else:
-                print("Error: El cursor no está disponible.")
+                self.cursor.execute(consulta)
+            self.conexion.commit()
         except sqlite3.Error as e:
             print(f"Error al ejecutar la consulta: {e}")
 
     def obtener_registros(self, consulta, parametros=None):
         try:
-            if self.miCursor:
-                if parametros:
-                    self.miCursor.execute(consulta, parametros)
-                else:
-                    self.miCursor.execute(consulta)
-                return self.miCursor.fetchall()
+            if parametros:
+                self.cursor.execute(consulta, parametros)
             else:
-                print("Error: El cursor no está disponible.")
+                self.cursor.execute(consulta)
+            return self.cursor.fetchall()
         except sqlite3.Error as e:
             print(f"Error al obtener los registros: {e}")
+            return []
 
-    def crear_tabla_libros(self):
+    def crear_tabla(self, consulta):
         try:
-            self.miCursor.execute("""
-                CREATE TABLE IF NOT EXISTS libros (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    isbn TEXT UNIQUE,
-                    titulo TEXT,
-                    autor TEXT,
-                    genero TEXT,
-                    precio REAL,
-                    fecha_ultimo_precio TEXT,
-                    cant_disponible INTEGER
-                )
-            """)
+            self.cursor.execute(consulta)
             self.conexion.commit()
         except sqlite3.Error as e:
-            print(f"Error al crear la tabla libros: {e}")
+            print(f"Error al crear la tabla: {e}")
 
-    def crear_tabla_ventas(self):
-        try:
-            self.miCursor.execute("""
-                CREATE TABLE IF NOT EXISTS ventas (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    id_libro INTEGER,
-                    cantidad INTEGER,
-                    fecha TEXT,
-                    FOREIGN KEY (id_libro) REFERENCES libros (id)
-                )
-            """)
-            self.conexion.commit()
-        except sqlite3.Error as e:
-            print(f"Error al crear la tabla ventas: {e}")
