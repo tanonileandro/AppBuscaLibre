@@ -34,7 +34,7 @@ class BuscaLibre:
                 precio REAL,
                 FOREIGN KEY (id_libro) REFERENCES libros (id)
             )
-        """
+            """
         try:
             self.conexion.crear_tabla(consulta)
         except Exception as e:
@@ -52,7 +52,7 @@ class BuscaLibre:
                 fecha_ultimo_precio TEXT,
                 cant_disponible INTEGER
             )
-        """
+            """
         try:
             self.conexion.crear_tabla(consulta)
         except Exception as e:
@@ -73,7 +73,7 @@ class BuscaLibre:
             genero = input("Género: ")
             precio = float(input("Precio: $"))
             fecha_ultimo_precio = datetime.today().strftime("%Y-%m-%d")
-            cant_disponible = int(input("CantDisponible: "))
+            cant_disponible = int(input("Cant. Disponible: "))
 
             consulta = "INSERT INTO libros (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, " \
                        "cant_disponible) VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -151,6 +151,7 @@ class BuscaLibre:
                 parametros_select = (id_libro,)
                 registro = self.conexion.obtener_registros(consulta_select, parametros_select)
 
+                print("\n> Información del libro: ")
                 if registro:
                     libro = registro[0]
                     isbn = libro[1]
@@ -161,7 +162,6 @@ class BuscaLibre:
                     fecha_ultimo_precio = libro[6]
                     cant_disponible = libro[7]
 
-                    print("\n> Información del libro: ")
                     print(f"ID: {libro[0]} | ISBN: {libro[1]} | Título: {libro[2]} | Autor: {libro[3]} | "
                           f"Género: {libro[4]} \n")
 
