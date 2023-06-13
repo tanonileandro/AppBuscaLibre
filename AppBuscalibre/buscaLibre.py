@@ -22,8 +22,8 @@ class BuscaLibre:
         """
         try:
             self.conexion.crear_tabla(consulta)
-        except:
-            print("Error al crear la tabla de libros.")
+        except Exception as e:
+            log.error(f"Error al crear la tabla de libros: {e}")
 
     def crear_tabla_ventas(self):
         consulta = """

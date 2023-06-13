@@ -57,9 +57,9 @@ def ejecutar_menu():
         elif opcion == "10":
             buscalibre.mostrar_ventas()
         elif opcion == "0":
-            print("Saliendo del menú...")
+            print("\nSaliendo del menú...")
         else:
-            print("Opción inválida. Intente nuevamente.")
+            print("\nOpción inválida. Intente nuevamente.")
 
     conexion.desconectar()
 

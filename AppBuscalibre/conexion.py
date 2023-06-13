@@ -61,4 +61,6 @@ class ConexionSQLite:
             self.conexion.commit()
         except sqlite3.Error as e:
             log.error(f"Error al crear la tabla: {e}")
+        finally:
+            self.desconectar()
 
