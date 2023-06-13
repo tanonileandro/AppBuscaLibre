@@ -1,0 +1,8 @@
+10:48:03 AM: ERROR: [BuscaLibre.py:448] Error al mostrar las ventas: tuple index out of range
+10:48:59 AM: ERROR: [BuscaLibre.py:448] Error al mostrar las ventas: tuple index out of range
+10:49:41 AM: ERROR: [BuscaLibre.py:448] Error al mostrar las ventas: tuple index out of range
+10:57:18 AM: ERROR: [Conexion.py:55] Error al obtener los registros: no such column: v.id_venta
+10:58:07 AM: ERROR: [Conexion.py:55] Error al obtener los registros: no such column: v.id_venta
+11:07:16 AM: ERROR: [BuscaLibre.py:449] Error al mostrar las ventas: tuple index out of range
+11:11:50 AM: ERROR: [Conexion.py:55] Error al obtener los registros: no such column: v.id_venta
+11:17:22 AM: ERROR: [BuscaLibre.py:450] Error al mostrar las ventas: tuple index out of range
