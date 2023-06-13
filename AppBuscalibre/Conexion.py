@@ -22,7 +22,7 @@ class ConexionSQLite:
                 self.cursor.close()
             if self.conexion:
                 self.conexion.close()
-            print("> Desconexión exitosa de la base de datos <")
+            print(" > Desconexión exitosa de la base de datos <")
         except sqlite3.Error as e:
             log.error(f"Error al desconectar de la base de datos: {e}")
 
@@ -61,6 +61,3 @@ class ConexionSQLite:
             self.conexion.commit()
         except sqlite3.Error as e:
             log.error(f"Error al crear la tabla: {e}")
-        finally:
-            self.desconectar()
-

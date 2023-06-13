@@ -1,5 +1,5 @@
-from conexion import ConexionSQLite
-from buscaLibre import BuscaLibre
+from Conexion import ConexionSQLite
+from BuscaLibre import BuscaLibre
 
 
 def mostrar_menu():
@@ -20,7 +20,7 @@ def mostrar_menu():
 
 
 def ejecutar_menu():
-    conexion = ConexionSQLite("buscalibre.db")
+    conexion = ConexionSQLite("base_de_datos.db")
     conexion.conectar()
 
     buscalibre = BuscaLibre(conexion)
@@ -57,7 +57,7 @@ def ejecutar_menu():
         elif opcion == "10":
             buscalibre.mostrar_ventas()
         elif opcion == "0":
-            print("\nSaliendo del menú...")
+            print("Saliendo del menú...")
         else:
             print("\nOpción inválida. Intente nuevamente.")
 

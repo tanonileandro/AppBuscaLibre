@@ -1,4 +1,3 @@
-from datetime import date
 from datetime import datetime
 import logging as log
 
@@ -32,6 +31,7 @@ class BuscaLibre:
                 id_libro INTEGER,
                 cantidad INTEGER,
                 fecha TEXT,
+                precio REAL,
                 FOREIGN KEY (id_libro) REFERENCES libros (id)
             )
         """
@@ -72,18 +72,18 @@ class BuscaLibre:
             autor = input("Autor: ")
             genero = input("Género: ")
             precio = float(input("Precio: $"))
-            fecha_ultimo_precio = date.today().strftime("%Y-%m-%d")
+            fecha_ultimo_precio = datetime.today().strftime("%Y-%m-%d")
             cant_disponible = int(input("CantDisponible: "))
 
-            consulta = "INSERT INTO libros (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, cant_disponible) " \
-                       "VALUES (?, ?, ?, ?, ?, ?, ?)"
+            consulta = "INSERT INTO libros (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, " \
+                       "cant_disponible) VALUES (?, ?, ?, ?, ?, ?, ?)"
             parametros = (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, cant_disponible)
 
             self.conexion.ejecutar_consulta(consulta, parametros)
 
             print("\nLibro cargado correctamente.")
         except Exception as e:
-            print(f"\nError al cargar el libro: {e}")
+            log.error(f"\nError al cargar el libro: {e}")
 
     def modificar_precio_libro(self):
         try:
@@ -108,7 +108,7 @@ class BuscaLibre:
                 # Mostrar información del libro
                 print("\n> Información del libro: ")
                 print(f"ID: {libro[0]}, ISBN: {libro[1]}, Título: {libro[2]}, Autor: {libro[3]}, "
-                      f"Género: {libro[4]}, Precio: {libro[5]:.2f}, Fecha Último Precio: {libro[6]}, "
+                      f"Género: {libro[4]}, Precio: ${libro[5]:.2f}, Fecha Último Precio: {libro[6]}, "
                       f"CantDisponible: {libro[7]}")
 
                 # Confirmar modificación del precio
@@ -129,7 +129,7 @@ class BuscaLibre:
         except ValueError:
             print("\nError: Ingrese un valor numérico válido para el ID del libro.")
         except Exception as e:
-            print(f"\nError al modificar el precio del libro: {e}")
+            log.error(f"\nError al modificar el precio del libro: {e}")
 
     def borrar_libro(self):
         try:
@@ -186,7 +186,7 @@ class BuscaLibre:
             else:
                 print("\nEl ID del libro no existe.")
         except Exception as e:
-            print(f"\nError al borrar el libro {e}")
+            log.error(f"\nError al borrar el libro {e}")
 
     def cargar_disponibilidad(self):
         try:
@@ -235,7 +235,7 @@ class BuscaLibre:
             else:
                 print("\nEl ID del libro no existe.")
         except Exception as e:
-            print(f"\nError al cargar la disponibilidad: {e}")
+            log.error(f"\nError al cargar la disponibilidad: {e}")
 
     def listar_libros(self):
         consulta = "SELECT * FROM libros ORDER BY id, autor, titulo"
@@ -254,7 +254,7 @@ class BuscaLibre:
                 cant_disponible = registro[7]
 
                 print(f"ID: {id_libro} | ISBN: {isbn} | Título: {titulo} | Autor: {autor} | Genero: {genero} | "
-                      f"Precio: {precio:.2f} | Fecha ultimo precio: {fecha_ultimo_precio} | "
+                      f"Precio: ${precio:.2f} | Fecha ultimo precio: {fecha_ultimo_precio} | "
                       f"Cant. disponible: {cant_disponible}")
         else:
             print("\nNo hay libros para mostrar.")
@@ -276,17 +276,18 @@ class BuscaLibre:
             if registro_libro:
                 libro = registro_libro[0]
                 cant_disponible_actual = libro[7]
+                precio_venta = libro[5]
 
                 print("\n> Información del libro: ")
-                print(f"ID: {libro[0]}, ISBN: {libro[1]}, Título: {libro[2]}, Autor: {libro[3]}, "
-                      f"Género: {libro[4]}, Precio: {libro[5]:.2f}, Fecha Último Precio: {libro[6]}, "
+                print(f"ID: {libro[0]} | ISBN: {libro[1]} | Título: {libro[2]} | Autor: {libro[3]} | "
+                      f"Género: {libro[4]} | Precio: ${libro[5]:.2f} | Fecha Último Precio: {libro[6]} | "
                       f"Cant. Disponible: {libro[7]}")
 
                 cantidad = int(input("\nCantidad vendida: "))
 
                 if cantidad <= cant_disponible_actual:
-                    consulta_insert_venta = "INSERT INTO ventas (id_libro, cantidad, fecha) VALUES (?, ?, ?)"
-                    parametros_insert_venta = (id_libro, cantidad, date.today().strftime("%Y-%m-%d"))
+                    consulta_insert_venta = "INSERT INTO ventas (id_libro, cantidad, fecha, precio) VALUES (?, ?, ?, ?)"
+                    parametros_insert_venta = (id_libro, cantidad, datetime.today().strftime("%Y-%m-%d"), precio_venta)
 
                     consulta_update_libro = "UPDATE libros SET cant_disponible = ? WHERE id = ?"
                     parametros_update_libro = (cant_disponible_actual - cantidad, id_libro)
@@ -300,7 +301,7 @@ class BuscaLibre:
             else:
                 print("\nEl ID del libro no existe.")
         except Exception as e:
-            print(f"Error al realizar la venta: {e}")
+            log.error(f"Error al realizar la venta: {e}")
 
     def actualizar_precios(self):
         try:
@@ -335,7 +336,7 @@ class BuscaLibre:
                         isbn, titulo, autor, genero, precio_actual, fecha_ultimo_precio, cant_disponible)
 
                     consulta_update_libro = "UPDATE libros SET precio = ?, fecha_ultimo_precio = ? WHERE id = ?"
-                    parametros_update_libro = (nuevo_precio, date.today().strftime("%Y-%m-%d"), id_libro)
+                    parametros_update_libro = (nuevo_precio, datetime.today().strftime("%Y-%m-%d"), id_libro)
 
                     self.conexion.ejecutar_consulta(consulta_insert_historico, parametros_insert_historico)
                     self.conexion.ejecutar_consulta(consulta_update_libro, parametros_update_libro)
@@ -344,16 +345,11 @@ class BuscaLibre:
             else:
                 print("\nNo hay libros para actualizar los precios.")
         except Exception as e:
-            print(f"\nError al actualizar los precios: {e}")
+            log.error(f"\nError al actualizar los precios: {e}")
 
     def mostrar_registros_anteriores_fecha(self):
         try:
             print(" Registros Anteriores ".center(60, '-'))
-
-            # Verificar si se desea salir
-            opcion_salir = input("\nPresione cualquier valor para continuar o \"0\" para volver al menú: ")
-            if opcion_salir == "0":
-                return
 
             fecha_valida = False
             while not fecha_valida:
@@ -380,22 +376,18 @@ class BuscaLibre:
                     fecha_ultimo_precio = registro[6]
                     cant_disponible = registro[7]
 
+                    print("\n> Información del libro: ")
                     print(f"ID: {id_libro} | ISBN: {isbn} | Título: {titulo} | Autor: {autor} | Género: {genero} | "
-                          f"Precio: {precio:.2f} | Fecha último precio: {fecha_ultimo_precio} | "
+                          f"Precio: ${precio:.2f} | Fecha último precio: {fecha_ultimo_precio} | "
                           f"Cant. disponible: {cant_disponible}")
             else:
                 print("\nNo hay registros anteriores a la fecha límite.")
         except Exception as e:
-            print(f"\nError al mostrar los registros anteriores a la fecha: {e}")
+            log.error(f"\nError al mostrar los registros anteriores a la fecha: {e}")
 
     def mostrar_historico_libros(self):
         try:
             print(" Historial de Precios ".center(60, '-'))
-
-            # Verificar si se desea salir
-            opcion_salir = input("\nPresione cualquier valor para continuar o \"0\" para volver al menú: ")
-            if opcion_salir == "0":
-                return
 
             consulta = "SELECT * FROM historico_libros"
             registros = self.conexion.obtener_registros(consulta)
@@ -413,21 +405,16 @@ class BuscaLibre:
                     cant_disponible = registro[7]
 
                     print(f"ID: {id_libro} | ISBN: {isbn} | Título: {titulo} | Autor: {autor} | Genero: {genero} | "
-                          f"Precio: {precio:.2f} | Fecha ultimo precio: {fecha_ultimo_precio} | "
+                          f"Precio: ${precio:.2f} | Fecha ultimo precio: {fecha_ultimo_precio} | "
                           f"Cant. disponible: {cant_disponible}")
             else:
                 print("No hay registros en el historial de libros.")
         except Exception as e:
-            print(f"Error al mostrar el historial de libros: {e}")
+            log.error(f"Error al mostrar el historial de libros: {e}")
 
     def mostrar_ventas(self):
         try:
             print(" Historial de Ventas ".center(60, '-'))
-
-            # Verificar si se desea salir
-            opcion_salir = input("\nPresione cualquier valor para continuar o \"0\" para volver al menú: ")
-            if opcion_salir == "0":
-                return
 
             consulta = "SELECT * FROM ventas"
             registros = self.conexion.obtener_registros(consulta)
@@ -439,9 +426,11 @@ class BuscaLibre:
                     id_libro = registro[1]
                     cantidad = registro[2]
                     fecha = registro[3]
+                    precio = registro[4]
 
-                    print(f"ID Venta: {id_venta}, ID Libro: {id_libro}, Cantidad: {cantidad}, Fecha: {fecha}")
+                    print(f"ID Venta: {id_venta} | ID Libro: {id_libro} | Cantidad: {cantidad} | Fecha: {fecha} | "
+                          f"Precio/Unidad: {precio:.2f}")
             else:
                 print("No hay registros de ventas.")
         except Exception as e:
-            print(f"Error al mostrar las ventas: {e}")
+            log.error(f"Error al mostrar las ventas: {e}")
