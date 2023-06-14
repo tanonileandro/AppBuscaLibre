@@ -1,11 +1,14 @@
+# Importación de módulos
 from datetime import datetime
 import logging as log
 
-
+# Uso de la clase Busca Libre
 class BuscaLibre:
     def __init__(self, conexion):
         self.conexion = conexion
 
+
+# Métodos crear tablas
     def crear_tabla_libros(self):
         consulta = """
             CREATE TABLE IF NOT EXISTS libros (
@@ -58,6 +61,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"Error al crear la tabla de historico_libros: {e}")
 
+# Método cargar libros
     def cargar_libros(self):
         try:
             print(" Cargar Libro ".center(60, '-'))
@@ -131,6 +135,8 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"\nError al modificar el precio del libro: {e}")
 
+
+# Método borrar libro
     def borrar_libro(self):
         try:
             print(" Borrar Libro ".center(60, '-'))
@@ -188,6 +194,8 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"\nError al borrar el libro {e}")
 
+
+# Método cargar disponibilidad
     def cargar_disponibilidad(self):
         try:
             print(" Cargar Disponibilidad ".center(60, '-'))
@@ -259,6 +267,8 @@ class BuscaLibre:
         else:
             print("\nNo hay libros para mostrar.")
 
+
+# Método realizar ventas
     def realizar_venta(self):
         try:
             print(" Registrar Venta ".center(60, '-'))
@@ -303,6 +313,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"Error al realizar la venta: {e}")
 
+# Método actualizar precios
     def actualizar_precios(self):
         try:
             print(" Actualizar Precios ".center(60, '-'))
