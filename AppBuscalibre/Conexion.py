@@ -8,6 +8,7 @@ class ConexionSQLite:
         self.conexion = None
         self.cursor = None
 
+# Establecer conexión con la base de datos
     def conectar(self):
         try:
             self.conexion = sqlite3.connect(self.archivo_db)
@@ -16,6 +17,7 @@ class ConexionSQLite:
         except sqlite3.Error as e:
             log.error(f"Error al conectar a la base de datos: {e}")
 
+# Cerrar la conexión y liberar recursos de la base de datos 
     def desconectar(self):
         try:
             if self.cursor:
@@ -26,6 +28,7 @@ class ConexionSQLite:
         except sqlite3.Error as e:
             log.error(f"Error al desconectar de la base de datos: {e}")
 
+# Ejecutar consulta y obtener registro
     def obtener_registro(self, consulta):
         try:
             self.cursor.execute(consulta)
@@ -34,6 +37,7 @@ class ConexionSQLite:
         except Exception as e:
             log.error("Error al obtener el registro:", e)
 
+# Ejecutar consulta con o sin parámetros
     def ejecutar_consulta(self, consulta, parametros=None):
         try:
             if parametros:
@@ -44,6 +48,7 @@ class ConexionSQLite:
         except sqlite3.Error as e:
             log.error(f"Error al ejecutar la consulta: {e}")
 
+# Devolver todos los registros resultantes 
     def obtener_registros(self, consulta, parametros=None):
         try:
             if parametros:
@@ -55,6 +60,7 @@ class ConexionSQLite:
             log.error(f"Error al obtener los registros: {e}")
             return []
 
+# Crear una tabla y registrar cualquier error
     def crear_tabla(self, consulta):
         try:
             self.cursor.execute(consulta)
