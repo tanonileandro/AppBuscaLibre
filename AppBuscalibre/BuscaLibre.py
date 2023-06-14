@@ -1,11 +1,14 @@
+# Importación de módulos
 from datetime import datetime
 import logging as log
 
-
+# Uso de la clase Busca Libre
 class BuscaLibre:
     def __init__(self, conexion):
         self.conexion = conexion
 
+
+# Métodos crear tablas
     def crear_tabla_libros(self):
         consulta = """
             CREATE TABLE IF NOT EXISTS libros (
@@ -34,7 +37,7 @@ class BuscaLibre:
                 precio REAL,
                 FOREIGN KEY (id_libro) REFERENCES libros (id)
             )
-        """
+            """
         try:
             self.conexion.crear_tabla(consulta)
         except Exception as e:
@@ -52,12 +55,13 @@ class BuscaLibre:
                 fecha_ultimo_precio TEXT,
                 cant_disponible INTEGER
             )
-        """
+            """
         try:
             self.conexion.crear_tabla(consulta)
         except Exception as e:
             log.error(f"Error al crear la tabla de historico_libros: {e}")
 
+# Método cargar libros
     def cargar_libros(self):
         try:
             print(" Cargar Libro ".center(60, '-'))
@@ -73,7 +77,7 @@ class BuscaLibre:
             genero = input("Género: ")
             precio = float(input("Precio: $"))
             fecha_ultimo_precio = datetime.today().strftime("%Y-%m-%d")
-            cant_disponible = int(input("CantDisponible: "))
+            cant_disponible = int(input("Cant. Disponible: "))
 
             consulta = "INSERT INTO libros (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, " \
                        "cant_disponible) VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -131,6 +135,8 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"\nError al modificar el precio del libro: {e}")
 
+
+# Método borrar libro
     def borrar_libro(self):
         try:
             print(" Borrar Libro ".center(60, '-'))
@@ -151,6 +157,7 @@ class BuscaLibre:
                 parametros_select = (id_libro,)
                 registro = self.conexion.obtener_registros(consulta_select, parametros_select)
 
+                print("\n> Información del libro: ")
                 if registro:
                     libro = registro[0]
                     isbn = libro[1]
@@ -161,7 +168,6 @@ class BuscaLibre:
                     fecha_ultimo_precio = libro[6]
                     cant_disponible = libro[7]
 
-                    print("\n> Información del libro: ")
                     print(f"ID: {libro[0]} | ISBN: {libro[1]} | Título: {libro[2]} | Autor: {libro[3]} | "
                           f"Género: {libro[4]} \n")
 
@@ -188,6 +194,8 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"\nError al borrar el libro {e}")
 
+
+# Método cargar disponibilidad
     def cargar_disponibilidad(self):
         try:
             print(" Cargar Disponibilidad ".center(60, '-'))
@@ -259,6 +267,8 @@ class BuscaLibre:
         else:
             print("\nNo hay libros para mostrar.")
 
+
+# Método realizar ventas
     def realizar_venta(self):
         try:
             print(" Registrar Venta ".center(60, '-'))
@@ -303,6 +313,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"Error al realizar la venta: {e}")
 
+# Método actualizar precios
     def actualizar_precios(self):
         try:
             print(" Actualizar Precios ".center(60, '-'))
