@@ -2,9 +2,9 @@
 Content learned in the Python course and skills used that helped me to apply in different projects.
 
 ### <i><b>Grupo 9</b></i>
-Leandro Murzyla
-Felipe Sbuttoni
-Leandro Tanoni
+<li>Leandro Murzyla</li>
+<li>Felipe Sbuttoni</li>
+<li>Leandro Tanoni</li>
 
 <p align="left">
   <a href="https://skillicons.dev">
