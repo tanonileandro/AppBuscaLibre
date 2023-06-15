@@ -6,3 +6,6 @@
 11:07:16 AM: ERROR: [BuscaLibre.py:449] Error al mostrar las ventas: tuple index out of range
 11:11:50 AM: ERROR: [Conexion.py:55] Error al obtener los registros: no such column: v.id_venta
 11:17:22 AM: ERROR: [BuscaLibre.py:450] Error al mostrar las ventas: tuple index out of range
+11:28:05 AM: ERROR: [BuscaLibre.py:90] 
+Error al cargar el libro: could not convert string to float: ''
+11:33:17 AM: ERROR: [Conexion.py:49] Error al ejecutar la consulta: UNIQUE constraint failed: libros.isbn

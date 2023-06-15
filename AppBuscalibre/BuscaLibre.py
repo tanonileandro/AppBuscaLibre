@@ -2,13 +2,13 @@
 from datetime import datetime
 import logging as log
 
+
 # Uso de la clase Busca Libre
 class BuscaLibre:
     def __init__(self, conexion):
         self.conexion = conexion
 
-
-# Métodos crear tablas
+    # Métodos crear tablas
     def crear_tabla_libros(self):
         consulta = """
             CREATE TABLE IF NOT EXISTS libros (
@@ -61,7 +61,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"Error al crear la tabla de historico_libros: {e}")
 
-# Método cargar libros
+    # Método cargar libros
     def cargar_libros(self):
         try:
             print(" Cargar Libro ".center(60, '-'))
@@ -71,13 +71,44 @@ class BuscaLibre:
             if opcion_salir == "0":
                 return
 
-            isbn = input("ISBN: ")
-            titulo = input("Título: ")
-            autor = input("Autor: ")
+            while True:
+                isbn = input("ISBN: ")
+                if isbn.strip() == "":
+                    print("¡ISBN no puede estar vacío! Intente nuevamente.")
+                else:
+                    break
+
+            while True:
+                titulo = input("Título: ")
+                if titulo.strip() == "":
+                    print("¡Título no puede estar vacío! Intente nuevamente.")
+                else:
+                    break
+
+            while True:
+                autor = input("Autor: ")
+                if autor.strip() == "":
+                    print("¡Autor no puede estar vacío! Intente nuevamente.")
+                else:
+                    break
+
             genero = input("Género: ")
-            precio = float(input("Precio: $"))
+
+            while True:
+                try:
+                    precio = float(input("Precio: $"))
+                    break
+                except ValueError:
+                    print("¡Precio inválido! Intente nuevamente.")
+
             fecha_ultimo_precio = datetime.today().strftime("%Y-%m-%d")
-            cant_disponible = int(input("Cant. Disponible: "))
+
+            while True:
+                try:
+                    cant_disponible = int(input("Cant. Disponible: "))
+                    break
+                except ValueError:
+                    print("¡Cantidad inválida! Intente nuevamente.")
 
             consulta = "INSERT INTO libros (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, " \
                        "cant_disponible) VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -135,8 +166,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"\nError al modificar el precio del libro: {e}")
 
-
-# Método borrar libro
+    # Método borrar libro
     def borrar_libro(self):
         try:
             print(" Borrar Libro ".center(60, '-'))
@@ -194,8 +224,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"\nError al borrar el libro {e}")
 
-
-# Método cargar disponibilidad
+    # Método cargar disponibilidad
     def cargar_disponibilidad(self):
         try:
             print(" Cargar Disponibilidad ".center(60, '-'))
@@ -267,8 +296,36 @@ class BuscaLibre:
         else:
             print("\nNo hay libros para mostrar.")
 
+    # Mejora que me hizo hacer la profesora
+    """
+    def listar_libros(self):
+        opcion = input("¿Deseas listar los libros por título o por autor? (titulo/autor): ")
+        if opcion.lower() == "titulo":
+            consulta = "SELECT titulo, autor FROM libros ORDER BY titulo"
+        elif opcion.lower() == "autor":
+            consulta = "SELECT autor, titulo FROM libros ORDER BY autor"
+        else:
+            print("Opción inválida.")
+            return
 
-# Método realizar ventas
+        self.conexion.obtener_registros(consulta)
+        registros = self.conexion.obtener_registros(consulta)
+
+        if registros:
+            print("> Listado de Libros:")
+            for registro in registros:
+                if opcion.lower() == "titulo":
+                    titulo = registro[0]
+                    autor = registro[1]
+                    print(f"Título: {titulo} Autor: {autor}")
+                elif opcion.lower() == "autor":
+                    autor = registro[0]
+                    titulo = registro[1]
+                    print(f"Autor: {autor} | Título: {titulo}")
+        else:
+            print("\nNo hay libros para mostrar.")
+"""
+    # Método realizar ventas
     def realizar_venta(self):
         try:
             print(" Registrar Venta ".center(60, '-'))
@@ -313,7 +370,7 @@ class BuscaLibre:
         except Exception as e:
             log.error(f"Error al realizar la venta: {e}")
 
-# Método actualizar precios
+    # Método actualizar precios
     def actualizar_precios(self):
         try:
             print(" Actualizar Precios ".center(60, '-'))
