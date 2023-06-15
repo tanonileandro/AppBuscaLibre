@@ -1,0 +1,13 @@
+# <i><b>Programacion_Integrador</b></i>
+Content learned in the Python course and skills used that helped me to apply in different projects.
+
+### <i><b>Grupo 9</b></i>
+Leandro Murzyla
+Felipe Sbuttoni
+Leandro Tanoni
+
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=python&perline=14" />
+  </a>
+</p>
