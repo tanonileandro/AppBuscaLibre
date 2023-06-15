@@ -1,5 +1,4 @@
-# <i><b>Programacion_Integrador</b></i>
-Content learned in the Python course and skills used that helped me to apply in different projects.
+# <i><b>Programacion-II_Integrador</b></i>
 
 ### <i><b>Grupo 9</b></i>
 <li>Leandro Murzyla</li>
