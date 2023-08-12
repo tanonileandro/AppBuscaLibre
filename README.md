@@ -1,9 +1,7 @@
-# <i><b>Programacion-II_Integrador</b></i>
+# <i><b>Aplicación BuscaLibre</b></i>
 
-### <i><b>Grupo 9</b></i>
-<li>Leandro Murzyla</li>
-<li>Felipe Sbuttoni</li>
-<li>Leandro Tanoni</li>
+### <i><b>Gestion librería</b></i>
+
 <br>
 <p align="left">
   <a href="https://skillicons.dev">
