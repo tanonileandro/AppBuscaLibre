@@ -1,6 +1,6 @@
 # <i><b>Aplicación BuscaLibre</b></i>
 
-### <i><b>Gestion librería</b></i>
+### <i><b>Gestión librería</b></i>
 
 <br>
 <p align="left">
